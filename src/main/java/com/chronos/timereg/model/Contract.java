@@ -1,6 +1,5 @@
 package com.chronos.timereg.model;
 
-import com.chronos.timereg.model.enums.EmploymentType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +7,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Entity
 @Data
 @NoArgsConstructor
+@Entity
 @Table(name = "contracts")
 public class Contract {
 
@@ -18,13 +17,10 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // One-to-one association with User
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private EmploymentType employmentType;
 
     @Column(nullable = false)
     private LocalTime workingHoursStart;
@@ -32,18 +28,19 @@ public class Contract {
     @Column(nullable = false)
     private LocalTime workingHoursEnd;
 
-    // Applicable only for INTERNAL
+    // For internal employees only (if external, this remains null)
     private Integer maxAnnualLeave;
 
     @Column(nullable = false)
     private LocalDate contractStartDate;
 
+    // Nullable for permanent contracts
     private LocalDate contractEndDate;
 
-    // Defaults: days per week at office/home (can be changed)
+    // Default working days per week
     private Integer daysOfficePerWeek = 3;
     private Integer daysHomePerWeek = 2;
 
-    // Optional: trial period duration in months (for external only)
+    // For external employees (trial period in months); if non-null, the user is external
     private Integer trialPeriodMonths;
 }

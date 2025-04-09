@@ -8,23 +8,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="Contracts">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/DMController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/RateController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/DM.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Rate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/DMRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/RateRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/DMService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/DMServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/RateService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/RateServiceImpl.java" afterDir="false" />
+    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="Rates and DMs">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/CompanyController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/WorkOrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Company.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/WorkOrder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/enums/WOStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/CompanyRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/WorkOrderRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/CompanyService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/CompanyServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/WorkOrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/WorkOrderServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/LeaveController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/LeaveController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/DepartmentServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/DepartmentServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/HolidayServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/HolidayServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/ContractRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/ContractRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Contract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/enums/EmploymentType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LeaveEntryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LeaveEntryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/ContractServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/ContractServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/LeaveEntryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/LeaveEntryServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +132,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744108079747</updated>
-      <workItem from="1744108086075" duration="26014000" />
+      <workItem from="1744108086075" duration="29201000" />
     </task>
     <task id="LOCAL-00001" summary="Contracts">
       <option name="closed" value="true" />
@@ -140,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744187260648</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Rates and DMs">
+      <option name="closed" value="true" />
+      <created>1744202502892</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1744202502892</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -148,6 +158,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Contracts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Contracts" />
+    <MESSAGE value="Rates and DMs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rates and DMs" />
   </component>
 </project>
