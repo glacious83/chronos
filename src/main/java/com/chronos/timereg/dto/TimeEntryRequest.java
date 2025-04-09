@@ -23,7 +23,7 @@ public class TimeEntryRequest {
 
     @NotNull
     @PositiveOrZero
-    @DecimalMax(value = "8.0", inclusive = true, message = "Worked hours cannot exceed 8 hours per day")
+    @DecimalMax(value = "8.0", message = "Worked hours cannot exceed 8 hours per day")
     private double workedHours;  // Actual hours worked – must not exceed 8.0 hours
 
     // Optional overtime hours (separate approval may be required for these)

@@ -2,14 +2,18 @@ package com.chronos.timereg.service;
 
 import com.chronos.timereg.dto.LeaveEntryRequest;
 import com.chronos.timereg.exception.BusinessException;
+import com.chronos.timereg.model.Contract;
 import com.chronos.timereg.model.LeaveEntry;
 import com.chronos.timereg.model.User;
+import com.chronos.timereg.model.enums.EmploymentType;
 import com.chronos.timereg.model.enums.LeaveStatus;
+import com.chronos.timereg.repository.ContractRepository;
 import com.chronos.timereg.repository.LeaveEntryRepository;
 import com.chronos.timereg.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -18,23 +22,33 @@ public class LeaveEntryServiceImpl implements LeaveEntryService {
 
     private final LeaveEntryRepository leaveEntryRepository;
     private final UserRepository userRepository;
+    private final ContractRepository contractRepository;
 
-    public LeaveEntryServiceImpl(LeaveEntryRepository leaveEntryRepository, UserRepository userRepository) {
+    public LeaveEntryServiceImpl(LeaveEntryRepository leaveEntryRepository,
+                                 UserRepository userRepository,
+                                 ContractRepository contractRepository) {
         this.leaveEntryRepository = leaveEntryRepository;
         this.userRepository = userRepository;
+        this.contractRepository = contractRepository;
     }
 
     @Override
-    public LeaveEntry createLeaveEntry(LeaveEntryRequest request) {
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new BusinessException("User not found with id: " + request.getUserId()));
-        LeaveEntry leave = new LeaveEntry();
-        leave.setUser(user);
-        leave.setDate(request.getDate());
-        leave.setLeaveType(request.getLeaveType());
-        // On create, status must be PENDING.
-        leave.setLeaveStatus(LeaveStatus.PENDING);
-        return leaveEntryRepository.save(leave);
+    public LeaveEntry createLeaveEntry(LeaveEntryRequest dto) {
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new BusinessException("User not found."));
+
+        Contract contract = contractRepository.findByUser_Id(user.getId())
+                .orElseThrow(() -> new BusinessException("Contract not found."));
+
+        validateLeaveEntry(dto, contract);
+
+        LeaveEntry leaveEntry = new LeaveEntry();
+        leaveEntry.setUser(user);
+        leaveEntry.setDate(dto.getDate());
+        leaveEntry.setLeaveType(dto.getLeaveType());
+        leaveEntry.setLeaveStatus(LeaveStatus.PENDING);
+
+        return leaveEntryRepository.save(leaveEntry);
     }
 
     @Override
@@ -42,11 +56,35 @@ public class LeaveEntryServiceImpl implements LeaveEntryService {
         LeaveEntry leave = getLeaveEntryById(id);
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BusinessException("User not found with id: " + request.getUserId()));
+
+        Contract contract = contractRepository.findByUser_Id(user.getId())
+                .orElseThrow(() -> new BusinessException("Contract not found."));
+
+        validateLeaveEntry(request, contract);
         leave.setUser(user);
         leave.setDate(request.getDate());
         leave.setLeaveType(request.getLeaveType());
-        // Typically, updating leave details shouldn't change the status.
         return leaveEntryRepository.save(leave);
+    }
+
+    private void validateLeaveEntry(LeaveEntryRequest dto, Contract contract) {
+        if (contract.getEmploymentType() == EmploymentType.INTERNAL) {
+            int usedLeaves = leaveEntryRepository.countByUser_IdAndLeaveStatusAndDateBetween(
+                    dto.getUserId(),
+                    LeaveStatus.APPROVED,
+                    LocalDate.of(dto.getDate().getYear(), 1, 1),
+                    LocalDate.of(dto.getDate().getYear(), 12, 31)
+            );
+            if (usedLeaves >= contract.getMaxAnnualLeave()) {
+                throw new BusinessException("Exceeded maximum annual leave allowed (" + contract.getMaxAnnualLeave() + ").");
+            }
+        } else {
+            throw new BusinessException("External employees cannot register leaves.");
+        }
+
+        if (!leaveEntryRepository.findByUser_IdAndDate(dto.getUserId(), dto.getDate()).isEmpty()) {
+            throw new BusinessException("Leave already registered for the given date.");
+        }
     }
 
     @Override

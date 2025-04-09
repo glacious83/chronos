@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="" />
+    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/ContractController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/ContractRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/enums/EmploymentType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/ContractService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/ContractServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/TimeEntryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/TimeEntryRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Contract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Holiday.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Holiday.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/LeaveEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/LeaveEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/ProjectBranch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/ProjectBranch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/TimeEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/TimeEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/ContractRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/ContractRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LeaveEntryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LeaveEntryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/LeaveEntryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/LeaveEntryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +42,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="JpbToolWindowState">
     <option name="isToolWindowVisible" value="false" />
   </component>
@@ -25,30 +53,35 @@
   &quot;associatedIndex&quot;: 6
 }</component>
   <component name="ProjectId" id="2vRVruI6w6mkJNEzdGwcKUq2Lba" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.timereg [clean,install].executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.ChronosApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.timereg [clean,install].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.ChronosApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="ChronosApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="Chronos" />
@@ -85,7 +118,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1744108079747</updated>
-      <workItem from="1744108086075" duration="13974000" />
+      <workItem from="1744108086075" duration="21453000" />
     </task>
     <servers />
   </component>

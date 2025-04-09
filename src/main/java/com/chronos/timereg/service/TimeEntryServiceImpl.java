@@ -2,21 +2,19 @@ package com.chronos.timereg.service;
 
 import com.chronos.timereg.dto.TimeEntryRequest;
 import com.chronos.timereg.exception.BusinessException;
+import com.chronos.timereg.model.Contract;
 import com.chronos.timereg.model.Holiday;
 import com.chronos.timereg.model.TimeEntry;
 import com.chronos.timereg.model.User;
 import com.chronos.timereg.model.enums.ApprovalStatus;
 import com.chronos.timereg.model.enums.SpecialDayType;
-import com.chronos.timereg.repository.HolidayRepository;
-import com.chronos.timereg.repository.LeaveEntryRepository;
-import com.chronos.timereg.repository.TimeEntryRepository;
-import com.chronos.timereg.repository.UserRepository;
+import com.chronos.timereg.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -30,15 +28,18 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     private final UserRepository userRepository;
     private final LeaveEntryRepository leaveEntryRepository;
     private final HolidayRepository holidayRepository;
+    private final ContractRepository contractRepository;
 
     public TimeEntryServiceImpl(TimeEntryRepository timeEntryRepository,
                                 UserRepository userRepository,
                                 LeaveEntryRepository leaveEntryRepository,
-                                HolidayRepository holidayRepository) {
+                                HolidayRepository holidayRepository,
+                                ContractRepository contractRepository) {
         this.timeEntryRepository = timeEntryRepository;
         this.userRepository = userRepository;
         this.leaveEntryRepository = leaveEntryRepository;
         this.holidayRepository = holidayRepository;
+        this.contractRepository = contractRepository;
     }
 
     // --------------------------------------------------
@@ -77,14 +78,6 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     }
 
     /**
-     * Checks if a date is a Greek holiday using a dynamic set of dates (including Orthodox Easter).
-     */
-    private boolean isGreekHoliday(LocalDate date) {
-        Set<LocalDate> holidaySet = getGreekHolidays(date.getYear());
-        return holidaySet.contains(date);
-    }
-
-    /**
      * Builds a set of Greek holiday dates (fixed + computed for Easter) for a given year.
      * This includes Holy Spirit (Pentecost) and other common church feasts.
      */
@@ -104,20 +97,18 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         // Example: simplified calculation for Orthodox Easter + Holy Spirit
         LocalDate orthodoxEaster = calculateOrthodoxEaster(year);
         System.out.println("Orthodox Easter: " + orthodoxEaster);
-        if (orthodoxEaster != null) {
-            // Clean Monday: 48 days before Easter
-            holidays.add(orthodoxEaster.minusDays(48));
-            // Good Friday: 2 days before Easter
-            holidays.add(orthodoxEaster.minusDays(2));
-            // Holy Saturday: 1 day before Easter
-            holidays.add(orthodoxEaster.minusDays(1));
-            // Easter Sunday
-            holidays.add(orthodoxEaster);
-            // Easter Monday: the day after Easter
-            holidays.add(orthodoxEaster.plusDays(1));
-            // Holy Spirit (Pentecost): 50 days after Easter
-            holidays.add(orthodoxEaster.plusDays(50));
-        }
+        // Clean Monday: 48 days before Easter
+        holidays.add(orthodoxEaster.minusDays(48));
+        // Good Friday: 2 days before Easter
+        holidays.add(orthodoxEaster.minusDays(2));
+        // Holy Saturday: 1 day before Easter
+        holidays.add(orthodoxEaster.minusDays(1));
+        // Easter Sunday
+        holidays.add(orthodoxEaster);
+        // Easter Monday: the day after Easter
+        holidays.add(orthodoxEaster.plusDays(1));
+        // Holy Spirit (Pentecost): 50 days after Easter
+        holidays.add(orthodoxEaster.plusDays(50));
 
         return holidays;
     }
@@ -146,11 +137,10 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         int offset = 13;
 
         // Convert the Julian date to the Gregorian date.
-        LocalDate gregorianEaster = julianEaster.plusDays(offset);
 
         // For testing purposes, if the Nosfistis algorithm gives the expected results for 2026,
         // then gregorianEaster should be April 5, 2026.
-        return gregorianEaster;
+        return julianEaster.plusDays(offset);
     }
 
     // --------------------------------------------------
@@ -166,6 +156,9 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
 
+        Contract contract = contractRepository.findByUser_Id(user.getId())
+                .orElseThrow(() -> new BusinessException("Contract not found."));
+
         // Check for conflicting leave entries.
         if (!leaveEntryRepository.findByUser_IdAndDate(dto.getUserId(), dto.getDate()).isEmpty()) {
             throw new BusinessException("Cannot register working hours for a day on which the user is on leave.");
@@ -177,6 +170,8 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         if (totalWorked + dto.getWorkedHours() > 8.0) {
             throw new BusinessException("Total worked hours for the day cannot exceed 8 hours. Already recorded: " + totalWorked + " hours.");
         }
+
+        validateTimeEntry(dto, contract);
 
         // Build the new TimeEntry entity.
         TimeEntry entry = new TimeEntry();
@@ -197,9 +192,6 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
     @Override
     public TimeEntry updateTimeEntry(Long id, TimeEntryRequest dto) {
-        if (dto.getWorkedHours() > 8.0) {
-            throw new BusinessException("Individual time entry worked hours cannot exceed 8 hours per day.");
-        }
         if (!leaveEntryRepository.findByUser_IdAndDate(dto.getUserId(), dto.getDate()).isEmpty()) {
             throw new BusinessException("Cannot update: working hours cannot be registered if the user is on leave for that day.");
         }
@@ -208,12 +200,12 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
 
+        Contract contract = contractRepository.findByUser_Id(user.getId())
+                .orElseThrow(() -> new BusinessException("Contract not found."));
+
         List<TimeEntry> otherEntries = timeEntryRepository.findByUser_IdAndDate(dto.getUserId(), dto.getDate());
         otherEntries.removeIf(entry -> entry.getId().equals(id));
-        double totalOtherHours = otherEntries.stream().mapToDouble(TimeEntry::getWorkedHours).sum();
-        if (totalOtherHours + dto.getWorkedHours() > 8.0) {
-            throw new BusinessException("Updating this entry would cause total worked hours for the day to exceed 8 hours. Already recorded: " + totalOtherHours + " hours in other entries.");
-        }
+        validateTimeEntry(dto, contract);
 
         existing.setUser(user);
         existing.setDate(dto.getDate());
@@ -227,7 +219,6 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
         return timeEntryRepository.save(existing);
     }
-
 
     @Override
     public TimeEntry getTimeEntryById(Long id) {
@@ -252,5 +243,24 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         return entries.stream()
                 .mapToDouble(TimeEntry::getCompensationHours)
                 .sum();
+    }
+
+    private void validateTimeEntry(TimeEntryRequest dto, Contract contract) {
+
+        long dailyContractHours = Duration.between(contract.getWorkingHoursStart(), contract.getWorkingHoursEnd()).toMinutes() / 60;
+
+        if (dto.getWorkedHours() < dailyContractHours)
+            throw new BusinessException("Total hours (" + dto.getWorkedHours() + ") less than contracted hours (" + dailyContractHours + ").");
+
+        if (dto.getWorkedHours() > dailyContractHours)
+            throw new BusinessException("Overtime approval required for exceeding contracted hours.");
+
+        if (!leaveEntryRepository.findByUser_IdAndDate(dto.getUserId(), dto.getDate()).isEmpty())
+            throw new BusinessException("Cannot register working hours for a day on which the user is on leave.");
+
+        List<TimeEntry> existingEntries = timeEntryRepository.findByUser_IdAndDate(dto.getUserId(), dto.getDate());
+        double totalWorked = existingEntries.stream().mapToDouble(TimeEntry::getWorkedHours).sum();
+        if (totalWorked + dto.getWorkedHours() > dailyContractHours)
+            throw new BusinessException("Total worked hours for the day exceed contracted hours.");
     }
 }

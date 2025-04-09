@@ -1,16 +1,16 @@
 package com.chronos.timereg.model;
 
+import com.chronos.timereg.model.enums.EmploymentType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
 @Table(name = "contracts")
 public class Contract {
 
@@ -18,26 +18,32 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // One-to-One relationship with User
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @NotNull
-    private LocalDate startDate;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EmploymentType employmentType;
 
-    @NotNull
-    private LocalDate endDate;
+    @Column(nullable = false)
+    private LocalTime workingHoursStart;
 
-    @NotNull
-    private LocalTime contractStartTime;
+    @Column(nullable = false)
+    private LocalTime workingHoursEnd;
 
-    @NotNull
-    private LocalTime contractEndTime;
+    // Applicable only for INTERNAL
+    private Integer maxAnnualLeave;
 
-    private double expectedDailyHours;
+    @Column(nullable = false)
+    private LocalDate contractStartDate;
 
-    // Contract stipulates default working days per week
-    private int defaultOfficeDays = 3;
-    private int defaultHomeDays = 2;
+    private LocalDate contractEndDate;
+
+    // Defaults: days per week at office/home (can be changed)
+    private Integer daysOfficePerWeek = 3;
+    private Integer daysHomePerWeek = 2;
+
+    // Optional: trial period duration in months (for external only)
+    private Integer trialPeriodMonths;
 }
