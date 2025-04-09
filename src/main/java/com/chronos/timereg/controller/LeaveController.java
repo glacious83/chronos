@@ -1,6 +1,7 @@
 package com.chronos.timereg.controller;
 
 import com.chronos.timereg.dto.LeaveEntryRequest;
+import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.LeaveEntry;
 import com.chronos.timereg.model.enums.LeaveStatus;
 import com.chronos.timereg.service.LeaveEntryService;
@@ -36,7 +37,7 @@ public class LeaveController {
         try {
             status = LeaveStatus.valueOf(newStatus.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid status value: " + newStatus);
+            throw new BusinessException("Invalid status value: " + newStatus);
         }
         LeaveEntry updated = leaveEntryService.updateSubordinateLeaveStatus(leaveId, status, managerId);
         return ResponseEntity.ok(updated);

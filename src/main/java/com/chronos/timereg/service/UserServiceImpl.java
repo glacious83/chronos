@@ -1,9 +1,11 @@
 package com.chronos.timereg.service;
 
 import com.chronos.timereg.dto.UserRequest;
+import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.Department;
 import com.chronos.timereg.model.User;
 import com.chronos.timereg.repository.DepartmentRepository;
+import com.chronos.timereg.repository.RateRepository;
 import com.chronos.timereg.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
+    private final RateRepository rateRepository;
 
-    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository) {
+    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository) {
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
+        this.rateRepository = rateRepository;
     }
 
     @Override
@@ -29,11 +33,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("User not found with id: " + id));
     }
 
     @Override
     public User createUser(UserRequest userRequest) {
+        boolean validTitle = rateRepository.findByUserTitle(userRequest.getTitle()).isPresent();
+        if (!validTitle) {
+            throw new BusinessException("Invalid user title. Please select one of the configured titles.");
+        }
         User user = new User();
         user.setFirstName(userRequest.getFirstName());
         user.setLastName(userRequest.getLastName());
@@ -45,13 +53,13 @@ public class UserServiceImpl implements UserService {
 
         // Lookup the department by id
         Department department = departmentRepository.findById(userRequest.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + userRequest.getDepartmentId()));
+                .orElseThrow(() -> new BusinessException("Department not found with id: " + userRequest.getDepartmentId()));
         user.setDepartment(department);
 
         // If a responsible manager is provided, look up the User and set it; otherwise, leave null.
         if (userRequest.getResponsibleManagerId() != null) {
             User manager = userRepository.findById(userRequest.getResponsibleManagerId())
-                    .orElseThrow(() -> new RuntimeException("Manager not found with id: " + userRequest.getResponsibleManagerId()));
+                    .orElseThrow(() -> new BusinessException("Manager not found with id: " + userRequest.getResponsibleManagerId()));
             user.setResponsibleManager(manager);
         }
         return userRepository.save(user);
@@ -59,6 +67,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long id, UserRequest userRequest) {
+        boolean validTitle = rateRepository.findByUserTitle(userRequest.getTitle()).isPresent();
+        if (!validTitle) {
+            throw new BusinessException("Invalid user title. Please select one of the configured titles.");
+        }
         User existing = getUserById(id);
         existing.setFirstName(userRequest.getFirstName());
         existing.setLastName(userRequest.getLastName());
@@ -69,12 +81,12 @@ public class UserServiceImpl implements UserService {
         existing.setTitle(userRequest.getTitle());
 
         Department department = departmentRepository.findById(userRequest.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + userRequest.getDepartmentId()));
+                .orElseThrow(() -> new BusinessException("Department not found with id: " + userRequest.getDepartmentId()));
         existing.setDepartment(department);
 
         if (userRequest.getResponsibleManagerId() != null) {
             User manager = userRepository.findById(userRequest.getResponsibleManagerId())
-                    .orElseThrow(() -> new RuntimeException("Manager not found with id: " + userRequest.getResponsibleManagerId()));
+                    .orElseThrow(() -> new BusinessException("Manager not found with id: " + userRequest.getResponsibleManagerId()));
             existing.setResponsibleManager(manager);
         } else {
             existing.setResponsibleManager(null);

@@ -154,7 +154,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         }
         // Lookup the user.
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
+                .orElseThrow(() -> new BusinessException("User not found with id: " + dto.getUserId()));
 
         Contract contract = contractRepository.findByUser_Id(user.getId())
                 .orElseThrow(() -> new BusinessException("Contract not found."));
@@ -198,7 +198,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
         TimeEntry existing = getTimeEntryById(id);
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + dto.getUserId()));
+                .orElseThrow(() -> new BusinessException("User not found with id: " + dto.getUserId()));
 
         Contract contract = contractRepository.findByUser_Id(user.getId())
                 .orElseThrow(() -> new BusinessException("Contract not found."));
@@ -223,7 +223,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     @Override
     public TimeEntry getTimeEntryById(Long id) {
         return timeEntryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("TimeEntry not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("TimeEntry not found with id: " + id));
     }
 
     @Override

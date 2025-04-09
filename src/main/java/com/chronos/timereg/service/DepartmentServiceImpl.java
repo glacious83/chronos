@@ -1,6 +1,7 @@
 package com.chronos.timereg.service;
 
 import com.chronos.timereg.dto.DepartmentRequest;
+import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.Department;
 import com.chronos.timereg.model.User;
 import com.chronos.timereg.repository.DepartmentRepository;
@@ -31,7 +32,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department getDepartmentById(Long id) {
         return departmentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("Department not found with id: " + id));
     }
 
     @Override
@@ -41,7 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         // Lookup the manager by managerId
         User manager = userRepository.findById(departmentRequest.getManagerId())
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new BusinessException(
                         "Manager not found with id: " + departmentRequest.getManagerId()));
         department.setManager(manager);
         return departmentRepository.save(department);
@@ -54,7 +55,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         // Lookup the new manager by managerId
         User manager = userRepository.findById(departmentRequest.getManagerId())
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new BusinessException(
                         "Manager not found with id: " + departmentRequest.getManagerId()));
         existing.setManager(manager);
         return departmentRepository.save(existing);

@@ -1,5 +1,6 @@
 package com.chronos.timereg.service;
 
+import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.Holiday;
 import com.chronos.timereg.repository.HolidayRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class HolidayServiceImpl implements HolidayService {
     @Override
     public Holiday getHolidayById(Long id) {
         return holidayRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Holiday not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("Holiday not found with id: " + id));
     }
 
     @Override
