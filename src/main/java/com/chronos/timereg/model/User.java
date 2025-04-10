@@ -39,6 +39,8 @@ public class User {
 
     private String phone;         // Phone number
 
+    private String sap;         // Phone number
+
     // Many-to-one relationship to Location entity
     @ManyToOne
     @JoinColumn(name = "location_id")
@@ -54,4 +56,8 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "manager_id")
     private User responsibleManager;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

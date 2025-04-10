@@ -29,20 +29,16 @@ public class WorkOrder {
     private Company company;
 
     // Project Manager (PM) of the work order (assumed as a string for now)
-    @Column(nullable = false)
     private String pm;
 
     // Budget allocated for the work order
-    @Column(nullable = false)
     private BigDecimal budget;
 
     // Status of the work order.
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private WOStatus status;
 
     // Title or name of the work order.
-    @Column(nullable = false)
     private String title;
 
     // Optional description.
@@ -50,18 +46,15 @@ public class WorkOrder {
 
     // Additional date fields:
     // When the work order is scheduled to start.
-    @Column(nullable = false)
     private LocalDate startDate;
 
     // When the work order is scheduled to end.
-    @Column(nullable = false)
     private LocalDate endDate;
 
     // Optional deadline or due date.
     private LocalDate deadline;
 
     // Automatically set creation timestamp.
-    @Column(nullable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
     // Updated timestamp.

@@ -53,7 +53,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
      * or uses the specialDayType stored in the holiday record.
      * If no admin-defined holiday exists, falls back on default computed logic.
      */
-    private SpecialDayType determineSpecialDayType(LocalDate date) {
+    SpecialDayType determineSpecialDayType(LocalDate date) {
         Optional<Holiday> holidayOpt = holidayRepository.findByDate(date);
         if (holidayOpt.isPresent()) {
             Holiday holiday = holidayOpt.get();

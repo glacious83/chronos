@@ -8,18 +8,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="Added WOs and Company">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/LocationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/RateImportController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LocationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/LocationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/LocationServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/RateImportService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/RateImportServiceImpl.java" afterDir="false" />
+    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="RateImporter">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/TimeRegImportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/ComprehensiveImportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/ComprehensiveImportServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserImportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserImportServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/RateImportController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Project.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/WorkOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/WorkOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/enums/LeaveType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/enums/LeaveType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/DepartmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/DepartmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LocationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/LocationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/ProjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +134,7 @@
       <option name="presentableId" value="Default" />
       <updated>1744108079747</updated>
       <workItem from="1744108086075" duration="31295000" />
-      <workItem from="1744208651808" duration="1313000" />
+      <workItem from="1744208651808" duration="14647000" />
     </task>
     <task id="LOCAL-00001" summary="Contracts">
       <option name="closed" value="true" />
@@ -154,7 +160,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744206525189</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="RateImporter">
+      <option name="closed" value="true" />
+      <created>1744266550346</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1744266550346</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,6 +178,7 @@
     <MESSAGE value="Contracts" />
     <MESSAGE value="Rates and DMs" />
     <MESSAGE value="Added WOs and Company" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added WOs and Company" />
+    <MESSAGE value="RateImporter" />
+    <option name="LAST_COMMIT_MESSAGE" value="RateImporter" />
   </component>
 </project>

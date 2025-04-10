@@ -25,6 +25,11 @@ public class Project {
     @JoinColumn(name = "department_id")
     private Department departmentResponsible;
 
+    // Department responsible for the project
+    @ManyToOne
+    @JoinColumn(name = "dm_id")
+    private DM dm;
+
     // Project Manager
     @ManyToOne
     @JoinColumn(name = "pm_id")
