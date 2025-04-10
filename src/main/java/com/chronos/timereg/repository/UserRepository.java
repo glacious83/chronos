@@ -29,7 +29,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.company IS NULL OR " +
             "u.department IS NULL OR " +
             "u.location IS NULL OR " +
+            "u.approved IS false OR " +
             "u.responsibleManager IS NULL")
     List<User> findUsersWithMissingFields();
 
+    CharSequence findByEmail(String mail);
 }

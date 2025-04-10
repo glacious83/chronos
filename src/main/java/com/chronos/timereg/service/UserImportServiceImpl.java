@@ -10,6 +10,7 @@ import com.chronos.timereg.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.transaction.Transactional;
@@ -25,13 +26,15 @@ public class UserImportServiceImpl implements UserImportService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final LocationRepository locationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserImportServiceImpl(UserRepository userRepository,
                                  CompanyRepository companyRepository,
-                                 LocationRepository locationRepository) {
+                                 LocationRepository locationRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
         this.locationRepository = locationRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -123,6 +126,9 @@ public class UserImportServiceImpl implements UserImportService {
                 user.setVm(vm);
                 user.setIp(ip);
                 user.setPhone(phone);
+                user.setPassword(passwordEncoder.encode("Test1234!"));  // Default password, should be changed by the user.
+                user.setApproved(false);  // Default to approved.
+                user.setActive(false);
 
                 // Now, update the user's company reference.
                 user.setCompany(company);

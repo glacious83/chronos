@@ -43,15 +43,35 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("Invalid user title. Please select one of the configured titles.");
         }
         User user = new User();
+        if (userRequest.getFirstName()==null || userRequest.getFirstName().isEmpty()) {
+            throw new BusinessException("First name cannot be null or empty.");
+        }
         user.setFirstName(userRequest.getFirstName());
+        if (userRequest.getLastName()==null || userRequest.getLastName().isEmpty()) {
+            throw new BusinessException("Last name cannot be null or empty.");
+        }
         user.setLastName(userRequest.getLastName());
         user.setMiddleName(userRequest.getMiddleName());
+        if (userRequest.getEmail()==null || userRequest.getEmail().isEmpty()) {
+            throw new BusinessException("Email cannot be null or empty.");
+        }
         user.setEmail(userRequest.getEmail());
+        if (userRequest.getEmployeeId()==null || userRequest.getEmployeeId().isEmpty()) {
+            throw new BusinessException("Employee ID cannot be null or empty.");
+        }
         user.setEmployeeId(userRequest.getEmployeeId());
+        if (userRequest.getPassword()==null || userRequest.getPassword().isEmpty()) {
+            throw new BusinessException("Password cannot be null or empty.");
+        }
         user.setPassword(userRequest.getPassword());
+        if (userRequest.getTitle()==null || userRequest.getTitle().isEmpty()) {
+            throw new BusinessException("Title cannot be null or empty.");
+        }
         user.setTitle(userRequest.getTitle());
-
         // Lookup the department by id
+        if (userRequest.getDepartmentId() == null) {
+            throw new BusinessException("Department ID cannot be null.");
+        }
         Department department = departmentRepository.findById(userRequest.getDepartmentId())
                 .orElseThrow(() -> new BusinessException("Department not found with id: " + userRequest.getDepartmentId()));
         user.setDepartment(department);
@@ -62,6 +82,8 @@ public class UserServiceImpl implements UserService {
                     .orElseThrow(() -> new BusinessException("Manager not found with id: " + userRequest.getResponsibleManagerId()));
             user.setResponsibleManager(manager);
         }
+        user.setActive(true); // Default to active
+        user.setApproved(false); // Default to not approved
         return userRepository.save(user);
     }
 

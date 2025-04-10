@@ -7,6 +7,7 @@ import com.chronos.timereg.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.transaction.Transactional;
@@ -32,8 +33,9 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
     private final LeaveEntryRepository leaveEntryRepository;
     private final HolidayRepository holidayRepository;
     private final ContractRepository contractRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ComprehensiveImportServiceImpl(UserRepository userRepository, CompanyRepository companyRepository, DepartmentRepository departmentRepository, WorkOrderRepository workOrderRepository, ProjectRepository projectRepository, TimeEntryRepository timeEntryRepository, DMRepository dmRepository, LeaveEntryRepository leaveEntryRepository, HolidayRepository holidayRepository, ContractRepository contractRepository) {
+    public ComprehensiveImportServiceImpl(UserRepository userRepository, CompanyRepository companyRepository, DepartmentRepository departmentRepository, WorkOrderRepository workOrderRepository, ProjectRepository projectRepository, TimeEntryRepository timeEntryRepository, DMRepository dmRepository, LeaveEntryRepository leaveEntryRepository, HolidayRepository holidayRepository, ContractRepository contractRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.companyRepository = companyRepository;
         this.departmentRepository = departmentRepository;
@@ -44,6 +46,7 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
         this.leaveEntryRepository = leaveEntryRepository;
         this.holidayRepository = holidayRepository;
         this.contractRepository = contractRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -153,6 +156,9 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
                     user.setTitle(profile);
                     user.setEmail(surname.toLowerCase() + "." + firstName.toLowerCase() + "@nbg.gr");
                     user.setEmployeeId("E" + Math.abs((int) (Math.random() * 1000000))); // Random employee ID for new users.
+                    user.setApproved(false);
+                    user.setActive(false);
+                    user.setPassword(passwordEncoder.encode("Test1234!"));
                 }
                 if (!sapId.isEmpty() && !sapId.equals("0")) {
                     user.setSapId(sapId);

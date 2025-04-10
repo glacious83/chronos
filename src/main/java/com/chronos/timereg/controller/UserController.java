@@ -28,8 +28,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequest userRequest) {
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@Valid @RequestBody UserRequest userRequest) {
         return ResponseEntity.ok(userService.createUser(userRequest));
     }
 
