@@ -16,6 +16,7 @@ public class Project {
     private Long id;
 
     @NotBlank
+    @Column(unique = true)
     private String name;
 
     private String description;

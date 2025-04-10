@@ -22,16 +22,13 @@ public class Contract {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @Column(nullable = false)
     private LocalTime workingHoursStart;
 
-    @Column(nullable = false)
     private LocalTime workingHoursEnd;
 
     // For internal employees only (if external, this remains null)
     private Integer maxAnnualLeave;
 
-    @Column(nullable = false)
     private LocalDate contractStartDate;
 
     // Nullable for permanent contracts

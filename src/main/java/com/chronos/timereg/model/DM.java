@@ -25,14 +25,11 @@ public class DM {
     private String description;
 
     // Budget for the DM; must be non-negative.
-    @Column(nullable = false)
     private BigDecimal budget;
 
     // Start date of the DM validity (duration)
-    @Column(nullable = false)
     private LocalDate startDate;
 
     // End date of the DM validity (duration)
-    @Column(nullable = false)
     private LocalDate endDate;
 }

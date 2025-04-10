@@ -249,7 +249,7 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
                 // We assume that if a DM is provided, we link the project to that DM.
                 if (!projectName.isEmpty()) {
                     // In our Project entity, we now add a field "code" to match DM code, if desired.
-                    Optional<Project> projOpt = projectRepository.findByName(dmCode);
+                    Optional<Project> projOpt = projectRepository.findByName(projectName);
                     Project project;
                     if (projOpt.isPresent()) {
                         project = projOpt.get();

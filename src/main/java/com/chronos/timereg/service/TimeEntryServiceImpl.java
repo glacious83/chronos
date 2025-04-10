@@ -96,7 +96,6 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
         // Example: simplified calculation for Orthodox Easter + Holy Spirit
         LocalDate orthodoxEaster = calculateOrthodoxEaster(year);
-        System.out.println("Orthodox Easter: " + orthodoxEaster);
         // Clean Monday: 48 days before Easter
         holidays.add(orthodoxEaster.minusDays(48));
         // Good Friday: 2 days before Easter
