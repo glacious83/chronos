@@ -21,3 +21,7 @@ springdoc:
     swagger-ui:
       path: /swagger-ui.html
   show-actuator: true
+
+jwt:
+  secret: "MyVeryLongSecretKeyThatIsAtLeast64CharactersLongAndSecureForHS512!"
+  expiration: 3600000
