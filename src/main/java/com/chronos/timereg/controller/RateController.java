@@ -37,6 +37,11 @@ public class RateController {
         return ResponseEntity.ok(rateService.getAllRates());
     }
 
+    @GetMapping("/titles")
+    public ResponseEntity<List<String>> getTitles() {
+        return ResponseEntity.ok(rateService.getTitles());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRate(@PathVariable Long id) {
         rateService.deleteRate(id);

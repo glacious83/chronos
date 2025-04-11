@@ -14,4 +14,7 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
             "r.rate IS NULL OR r.rate = 0 OR " +
             "r.userTitle IS NULL OR r.userTitle = ''")
     List<Rate> findRatesWithMissingFields();
+
+    @Query("SELECT r.userTitle FROM Rate r ")
+    List<String> findTitles();
 }

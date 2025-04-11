@@ -46,7 +46,7 @@ public class UserImportServiceImpl implements UserImportService {
             // Get the sheet named "Users"
             Sheet sheet = workbook.getSheet("Users");
             if (sheet == null) {
-                throw new BusinessException("The uploaded Excel file does not contain a sheet named 'Users'.");
+                return;
             }
 
             // Assume header is in row 0 with columns:

@@ -31,7 +31,7 @@ public class RateImportServiceImpl implements RateImportService {
             // Get the sheet named "Rates"
             Sheet sheet = workbook.getSheet("rates");
             if (sheet == null) {
-                throw new BusinessException("The uploaded Excel file does not contain a sheet named 'Rates'.");
+                return;
             }
 
             // Assume the first row (index 0) is the header row with "Profiles" and "Rates"

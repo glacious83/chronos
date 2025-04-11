@@ -8,6 +8,7 @@ import com.chronos.timereg.repository.DepartmentRepository;
 import com.chronos.timereg.repository.RateRepository;
 import com.chronos.timereg.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -18,11 +19,13 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final RateRepository rateRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository) {
+    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
         this.rateRepository = rateRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -63,18 +66,18 @@ public class UserServiceImpl implements UserService {
         if (userRequest.getPassword()==null || userRequest.getPassword().isEmpty()) {
             throw new BusinessException("Password cannot be null or empty.");
         }
-        user.setPassword(userRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         if (userRequest.getTitle()==null || userRequest.getTitle().isEmpty()) {
             throw new BusinessException("Title cannot be null or empty.");
         }
         user.setTitle(userRequest.getTitle());
         // Lookup the department by id
-        if (userRequest.getDepartmentId() == null) {
-            throw new BusinessException("Department ID cannot be null.");
+
+        if (userRequest.getDepartmentId()!=null) {
+            Department department = departmentRepository.findById(userRequest.getDepartmentId())
+                    .orElseThrow(() -> new BusinessException("Department not found with id: " + userRequest.getDepartmentId()));
+            user.setDepartment(department);
         }
-        Department department = departmentRepository.findById(userRequest.getDepartmentId())
-                .orElseThrow(() -> new BusinessException("Department not found with id: " + userRequest.getDepartmentId()));
-        user.setDepartment(department);
 
         // If a responsible manager is provided, look up the User and set it; otherwise, leave null.
         if (userRequest.getResponsibleManagerId() != null) {
@@ -99,7 +102,7 @@ public class UserServiceImpl implements UserService {
         existing.setMiddleName(userRequest.getMiddleName());
         existing.setEmail(userRequest.getEmail());
         existing.setEmployeeId(userRequest.getEmployeeId());
-        existing.setPassword(userRequest.getPassword());
+        existing.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         existing.setTitle(userRequest.getTitle());
 
         Department department = departmentRepository.findById(userRequest.getDepartmentId())
@@ -119,5 +122,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User getUserByEmployeeId(String username) {
+        return userRepository.findByEmployeeId(username)
+                .orElseThrow(() -> new BusinessException("User not found with employee ID: " + username));
     }
 }

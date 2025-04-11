@@ -53,6 +53,11 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
+    public List<String> getTitles() {
+        return rateRepository.findTitles();
+    }
+
+    @Override
     public void deleteRate(Long id) {
         Rate existing = getRateById(id);
         rateRepository.delete(existing);

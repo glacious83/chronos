@@ -1,6 +1,8 @@
 package com.chronos.timereg.controller;
 
+import com.chronos.timereg.model.User;
 import com.chronos.timereg.security.JwtUtil;
+import com.chronos.timereg.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
@@ -18,6 +20,9 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/token")
@@ -31,10 +36,12 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             String token = jwtUtil.generateToken(username);
+            User user = userService.getUserByEmployeeId(username);
             Map<String, Object> response = new HashMap<>();
             response.put("access_token", token);
             response.put("token_type", "bearer");
             response.put("expires_in", jwtUtil.getJwtExpirationInMs() / 1000);
+            response.put("userId", user.getId());
             return ResponseEntity.ok(response);
         } catch (AuthenticationException ex) {
             return ResponseEntity.status(401).body("Invalid credentials");

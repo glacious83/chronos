@@ -8,5 +8,6 @@ public interface RateService {
     Rate updateRate(Long id, Rate rate);
     Rate getRateById(Long id);
     List<Rate> getAllRates();
+    List<String> getTitles();
     void deleteRate(Long id);
 }

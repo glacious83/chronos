@@ -58,7 +58,7 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
             // Assuming the sheet is named "Users"
             Sheet sheet = workbook.getSheet("timereg");
             if (sheet == null) {
-                throw new BusinessException("Excel file must contain a sheet named 'Users'.");
+                return;
             }
 
             int rowCount = sheet.getLastRowNum();
