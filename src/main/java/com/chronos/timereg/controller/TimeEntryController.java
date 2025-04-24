@@ -4,10 +4,14 @@ import com.chronos.timereg.dto.TimeEntryRequest;
 import com.chronos.timereg.model.TimeEntry;
 import com.chronos.timereg.service.TimeEntryService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
 @RestController
 @RequestMapping("/api/time-entries")
@@ -29,6 +33,16 @@ public class TimeEntryController {
     @GetMapping("/{id}")
     public ResponseEntity<TimeEntry> getTimeEntryById(@PathVariable Long id) {
         TimeEntry entry = timeEntryService.getTimeEntryById(id);
+        return ResponseEntity.ok(entry);
+    }
+
+    @GetMapping("{userId}/time-entries")
+    public ResponseEntity<List<TimeEntry>> getTimeEntries(
+            @PathVariable Long userId,
+            @RequestParam @DateTimeFormat(iso=DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso=DATE) LocalDate endDate
+    ) {
+        List<TimeEntry> entry = timeEntryService.getTimeEntryByUserIdAndDates(userId, startDate, endDate);
         return ResponseEntity.ok(entry);
     }
 

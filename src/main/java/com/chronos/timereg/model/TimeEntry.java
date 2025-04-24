@@ -26,6 +26,10 @@ public class TimeEntry {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id")  // no unique constraint
+    private Project project;
+
     @NotNull
     private LocalDate date;
 

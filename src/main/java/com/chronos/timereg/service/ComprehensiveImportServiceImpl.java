@@ -187,7 +187,7 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
                         leave.setUser(user);
                         leave.setDate(date);
                         leave.setLeaveType(LeaveType.FULL);
-                        leave.setLeaveStatus(com.chronos.timereg.model.enums.LeaveStatus.APPROVED);
+                        leave.setLeaveStatus(LeaveStatus.APPROVED);
                         leaveEntryRepository.save(leave);
                     } else if (actualsMHs == 4) {
                         // Create a half day leave.
@@ -253,10 +253,10 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
 
                 // Process Project: Use Project Name from column 12.
                 // We assume that if a DM is provided, we link the project to that DM.
+                Project project = null;
                 if (!projectName.isEmpty()) {
                     // In our Project entity, we now add a field "code" to match DM code, if desired.
                     Optional<Project> projOpt = projectRepository.findByName(projectName);
-                    Project project;
                     if (projOpt.isPresent()) {
                         project = projOpt.get();
                     } else {
@@ -266,7 +266,7 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
                     project.setName(projectName);
                     project.setDepartmentResponsible(department);
                     project.setDm(dm);
-                    projectRepository.save(project);
+                    project = projectRepository.save(project);
                 }
 
                 User finalUser = user;
@@ -285,9 +285,12 @@ public class ComprehensiveImportServiceImpl implements ComprehensiveImportServic
                 timeEntry.setOvertimeHours(0.0);
                 // Compute specialDayType here as needed; for simplicity, set to NORMAL.
 
-                TimeEntryServiceImpl timeEntryService = new TimeEntryServiceImpl(timeEntryRepository, userRepository, leaveEntryRepository, holidayRepository, contractRepository);
+                TimeEntryServiceImpl timeEntryService = new TimeEntryServiceImpl(timeEntryRepository, userRepository, leaveEntryRepository, holidayRepository, contractRepository, projectRepository);
                 timeEntry.setSpecialDayType(timeEntryService.determineSpecialDayType(date));
                 timeEntry.setWorkLocation(WorkLocation.OFFICE);
+                if (project != null) {
+                    timeEntry.setProject(project);
+                }
                 // Set default approval status.
                 timeEntry.setApprovalStatus(ApprovalStatus.APPROVED);
                 timeEntry.setApprovalTimestamp(LocalDateTime.of(date, LocalDateTime.now().toLocalTime()));

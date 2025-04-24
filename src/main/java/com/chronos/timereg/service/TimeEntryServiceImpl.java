@@ -2,10 +2,7 @@ package com.chronos.timereg.service;
 
 import com.chronos.timereg.dto.TimeEntryRequest;
 import com.chronos.timereg.exception.BusinessException;
-import com.chronos.timereg.model.Contract;
-import com.chronos.timereg.model.Holiday;
-import com.chronos.timereg.model.TimeEntry;
-import com.chronos.timereg.model.User;
+import com.chronos.timereg.model.*;
 import com.chronos.timereg.model.enums.ApprovalStatus;
 import com.chronos.timereg.model.enums.SpecialDayType;
 import com.chronos.timereg.repository.*;
@@ -29,17 +26,19 @@ public class TimeEntryServiceImpl implements TimeEntryService {
     private final LeaveEntryRepository leaveEntryRepository;
     private final HolidayRepository holidayRepository;
     private final ContractRepository contractRepository;
+    private final ProjectRepository projectRepository;
 
     public TimeEntryServiceImpl(TimeEntryRepository timeEntryRepository,
                                 UserRepository userRepository,
                                 LeaveEntryRepository leaveEntryRepository,
                                 HolidayRepository holidayRepository,
-                                ContractRepository contractRepository) {
+                                ContractRepository contractRepository, ProjectRepository projectRepository) {
         this.timeEntryRepository = timeEntryRepository;
         this.userRepository = userRepository;
         this.leaveEntryRepository = leaveEntryRepository;
         this.holidayRepository = holidayRepository;
         this.contractRepository = contractRepository;
+        this.projectRepository = projectRepository;
     }
 
     // --------------------------------------------------
@@ -148,6 +147,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
     @Override
     public TimeEntry createTimeEntry(TimeEntryRequest dto) {
+        Project project = null;
         if (dto.getWorkedHours() > 8.0) {
             throw new BusinessException("Individual time entry worked hours cannot exceed 8 hours per day.");
         }
@@ -170,6 +170,11 @@ public class TimeEntryServiceImpl implements TimeEntryService {
             throw new BusinessException("Total worked hours for the day cannot exceed 8 hours. Already recorded: " + totalWorked + " hours.");
         }
 
+        if (dto.getProjectId()!=null) {
+            project = projectRepository.findById(dto.getProjectId())
+                    .orElseThrow(() -> new BusinessException("Project not found with id: " + dto.getProjectId()));
+        }
+
         validateTimeEntry(dto, contract);
 
         // Build the new TimeEntry entity.
@@ -180,6 +185,7 @@ public class TimeEntryServiceImpl implements TimeEntryService {
         entry.setOvertimeHours(dto.getOvertimeHours());
         entry.setWorkLocation(dto.getWorkLocation());
         entry.setSpecialDayType(determineSpecialDayType(dto.getDate()));
+        entry.setProject(project);
         entry.setCompensationHours(0.0); // System-managed field.
         entry.setApprovalStatus(ApprovalStatus.PENDING);
 
@@ -244,8 +250,18 @@ public class TimeEntryServiceImpl implements TimeEntryService {
                 .sum();
     }
 
-    private void validateTimeEntry(TimeEntryRequest dto, Contract contract) {
+    @Override
+    public List<TimeEntry> getTimeEntryByUserIdAndDates(Long userId, LocalDate startDate, LocalDate endDate) {
+        return timeEntryRepository.findByUser_IdAndDateBetween(userId, startDate, endDate);
+    }
 
+    private void validateTimeEntry(TimeEntryRequest dto, Contract contract) {
+        if (contract == null) {
+            return;
+        }
+        if (contract.getWorkingHoursStart()==null || contract.getWorkingHoursEnd()==null) {
+            return;
+        }
         long dailyContractHours = Duration.between(contract.getWorkingHoursStart(), contract.getWorkingHoursEnd()).toMinutes() / 60;
 
         if (dto.getWorkedHours() < dailyContractHours)

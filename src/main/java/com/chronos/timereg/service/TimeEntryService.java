@@ -3,6 +3,7 @@ package com.chronos.timereg.service;
 import com.chronos.timereg.dto.TimeEntryRequest;
 import com.chronos.timereg.model.TimeEntry;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TimeEntryService {
@@ -39,4 +40,6 @@ public interface TimeEntryService {
      * Returns the total compensation hours for all TimeEntries belonging to the specified user.
      */
     double getTotalCompensationHoursForUser(Long userId);
+
+    List<TimeEntry> getTimeEntryByUserIdAndDates(Long userId, LocalDate startDate, LocalDate endDate);
 }

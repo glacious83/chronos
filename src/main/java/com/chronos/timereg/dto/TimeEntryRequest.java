@@ -19,6 +19,9 @@ public class TimeEntryRequest {
     private Long userId;  // The ID of the user submitting the time entry
 
     @NotNull
+    private Long projectId;
+
+    @NotNull
     private LocalDate date;  // Date for the time entry
 
     @NotNull
