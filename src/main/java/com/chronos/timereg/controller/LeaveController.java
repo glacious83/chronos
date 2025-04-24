@@ -3,13 +3,18 @@ package com.chronos.timereg.controller;
 import com.chronos.timereg.dto.LeaveEntryRequest;
 import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.LeaveEntry;
+import com.chronos.timereg.model.TimeEntry;
 import com.chronos.timereg.model.enums.LeaveStatus;
 import com.chronos.timereg.service.LeaveEntryService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import static org.springframework.format.annotation.DateTimeFormat.ISO.DATE;
 
 @RestController
 @RequestMapping("/api/leaves")
@@ -26,6 +31,16 @@ public class LeaveController {
     public ResponseEntity<List<LeaveEntry>> getSubordinateLeaves(@PathVariable Long managerId) {
         List<LeaveEntry> leaves = leaveEntryService.getLeavesOfSubordinates(managerId);
         return ResponseEntity.ok(leaves);
+    }
+
+    @GetMapping("{userId}/fetch")
+    public ResponseEntity<List<LeaveEntry>> getLeaveEntries(
+            @PathVariable Long userId,
+            @RequestParam @DateTimeFormat(iso=DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso=DATE) LocalDate endDate
+    ) {
+        List<LeaveEntry> entries = leaveEntryService.getLeaveEntryByUserIdAndDates(userId, startDate, endDate);
+        return ResponseEntity.ok(entries);
     }
 
     // Manager approves/rejects subordinate leave (or cancellation request)

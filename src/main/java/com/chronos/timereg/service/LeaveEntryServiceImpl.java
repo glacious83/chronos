@@ -55,8 +55,10 @@ public class LeaveEntryServiceImpl implements LeaveEntryService {
                 LocalDate.of(request.getDate().getYear(), 12, 31)
         );
 
-        if (approvedLeaves >= contract.getMaxAnnualLeave()) {
-            throw new BusinessException("Exceeded maximum annual leave (" + contract.getMaxAnnualLeave() + ") for the user.");
+        if (contract.getWorkingHoursStart() != null) {
+            if (approvedLeaves >= contract.getMaxAnnualLeave()) {
+                throw new BusinessException("Exceeded maximum annual leave (" + contract.getMaxAnnualLeave() + ") for the user.");
+            }
         }
 
         LeaveEntry leave = new LeaveEntry();
@@ -139,5 +141,10 @@ public class LeaveEntryServiceImpl implements LeaveEntryService {
             throw new BusinessException("Cancellation not allowed for leave status: " + leave.getLeaveStatus());
         }
         return leaveEntryRepository.save(leave);
+    }
+
+    @Override
+    public List<LeaveEntry> getLeaveEntryByUserIdAndDates(Long userId, LocalDate startDate, LocalDate endDate) {
+        return leaveEntryRepository.findByUser_IdAndDateBetween(userId, startDate, endDate);
     }
 }

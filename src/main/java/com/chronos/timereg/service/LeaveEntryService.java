@@ -4,6 +4,7 @@ import com.chronos.timereg.dto.LeaveEntryRequest;
 import com.chronos.timereg.model.LeaveEntry;
 import com.chronos.timereg.model.enums.LeaveStatus;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface LeaveEntryService {
@@ -35,4 +36,6 @@ public interface LeaveEntryService {
      *   - Otherwise, throw a business error.
      */
     LeaveEntry cancelLeave(Long leaveId, Long userId);
+
+    List<LeaveEntry> getLeaveEntryByUserIdAndDates(Long userId, LocalDate startDate, LocalDate endDate);
 }
