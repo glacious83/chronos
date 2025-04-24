@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -111,6 +108,50 @@ public class TimeEntryServiceImpl implements TimeEntryService {
 
         return holidays;
     }
+
+    @Override
+    public List<Holiday> getAllHolidays() {
+        List<Holiday> dbHolidays = holidayRepository.findAll();
+
+        int year = LocalDate.now().getYear();
+        // compute church dates
+        LocalDate orthodoxEaster = calculateOrthodoxEaster(year);
+        Map<LocalDate,String> names = new HashMap<>();
+        // fixed
+        names.put(LocalDate.of(year, 1, 1),   "New Year’s Day");
+        names.put(LocalDate.of(year, 1, 6),   "Theophania");
+        names.put(LocalDate.of(year, 3, 25),  "Independence Day");
+        names.put(LocalDate.of(year, 5, 1),   "Labour Day");
+        names.put(LocalDate.of(year, 8, 15),  "Dormition of the Virgin Mary");
+        names.put(LocalDate.of(year, 10, 28), "Ochi Day");
+        names.put(LocalDate.of(year, 12, 25), "Christmas Day");
+        names.put(LocalDate.of(year, 12, 26), "Synaxis of the Mother of God");
+        // church
+        names.put(orthodoxEaster.minusDays(48), "Clean Monday");
+        names.put(orthodoxEaster.minusDays(2),  "Good Friday");
+        names.put(orthodoxEaster.minusDays(1),  "Holy Saturday");
+        names.put(orthodoxEaster,               "Easter Sunday");
+        names.put(orthodoxEaster.plusDays(1),   "Easter Monday");
+        names.put(orthodoxEaster.plusDays(50),  "Pentecost");
+
+        Set<LocalDate> greekDates = new HashSet<>(names.keySet());
+        // add any missing computed ones
+        for (LocalDate date : greekDates) {
+            boolean exists = dbHolidays.stream()
+                    .anyMatch(h -> h.getDate().equals(date));
+            if (!exists) {
+                Holiday h = new Holiday();
+                h.setName(names.get(date));
+                h.setDate(date);
+                h.setHalfDay(false);
+                h.setSpecialDayType(SpecialDayType.GREEK_HOLIDAY);
+                dbHolidays.add(h);
+            }
+        }
+
+        return dbHolidays;
+    }
+
 
     /**
      * Approximate algorithm to find Orthodox Easter. This is only a placeholder.

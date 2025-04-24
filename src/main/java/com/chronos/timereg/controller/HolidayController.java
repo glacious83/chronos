@@ -5,6 +5,7 @@ import com.chronos.timereg.service.HolidayService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,9 +18,13 @@ public class HolidayController {
         this.holidayService = holidayService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Holiday>> getAllHolidays() {
-        return ResponseEntity.ok(holidayService.getAllHolidays());
+    @GetMapping()
+    public ResponseEntity<List<Holiday>> getAllHolidays(
+            @RequestParam(required = false) Integer year
+    ) {
+        int y = (year != null ? year : LocalDate.now().getYear());
+        List<Holiday> result = holidayService.getHolidaysForYear(y);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.chronos.timereg.service;
 
 import com.chronos.timereg.dto.TimeEntryRequest;
+import com.chronos.timereg.model.Holiday;
 import com.chronos.timereg.model.TimeEntry;
 
 import java.time.LocalDate;
@@ -10,6 +11,8 @@ import java.util.Set;
 public interface TimeEntryService {
 
     Set<LocalDate> getGreekHolidays(int year);
+
+    List<Holiday> getAllHolidays();
 
     /**
      * Creates a new TimeEntry from the given DTO.

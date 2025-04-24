@@ -8,7 +8,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="Leaves">
+    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="getHolidays returns also the greek holidays">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/HolidayServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/HolidayServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/TimeEntryServiceImpl.java" afterDir="false" />
@@ -131,7 +132,7 @@
       <workItem from="1744208651808" duration="42780000" />
       <workItem from="1744608022275" duration="584000" />
       <workItem from="1744633944263" duration="616000" />
-      <workItem from="1745474794119" duration="9750000" />
+      <workItem from="1745474794119" duration="11093000" />
     </task>
     <task id="LOCAL-00001" summary="Contracts">
       <option name="closed" value="true" />
@@ -229,7 +230,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745498488562</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="getHolidays returns also the greek holidays">
+      <option name="closed" value="true" />
+      <created>1745499015494</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1745499015494</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,6 +256,7 @@
     <MESSAGE value="Authentication oath2" />
     <MESSAGE value="Project" />
     <MESSAGE value="Leaves" />
-    <option name="LAST_COMMIT_MESSAGE" value="Leaves" />
+    <MESSAGE value="getHolidays returns also the greek holidays" />
+    <option name="LAST_COMMIT_MESSAGE" value="getHolidays returns also the greek holidays" />
   </component>
 </project>
