@@ -80,7 +80,8 @@ public class TimeEntryServiceImpl implements TimeEntryService {
      * Builds a set of Greek holiday dates (fixed + computed for Easter) for a given year.
      * This includes Holy Spirit (Pentecost) and other common church feasts.
      */
-    private Set<LocalDate> getGreekHolidays(int year) {
+    @Override
+    public Set<LocalDate> getGreekHolidays(int year) {
         Set<LocalDate> holidays = new HashSet<>();
 
         // Fixed-date holidays
