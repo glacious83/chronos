@@ -1,5 +1,9 @@
 package com.chronos.timereg.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -39,8 +43,6 @@ public class User {
 
     private String phone;         // Phone number
 
-    private String sap;         // Phone number
-
     // Many-to-one relationship to Location entity
     @ManyToOne
     @JoinColumn(name = "location_id")
@@ -51,10 +53,12 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @JsonManagedReference
     private Department department;
 
     @ManyToOne
     @JoinColumn(name = "manager_id")
+    @JsonBackReference
     private User responsibleManager;
 
     @ManyToOne

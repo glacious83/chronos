@@ -1,5 +1,6 @@
 package com.chronos.timereg.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class Department {
     // Manager of the department (FK to User)
     @ManyToOne
     @JoinColumn(name = "manager_id")
+    @JsonBackReference
     private User manager;
 }

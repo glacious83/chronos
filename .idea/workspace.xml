@@ -8,13 +8,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="getHolidays returns also the greek holidays">
+    <list default="true" id="52f86e91-3384-4094-9d7b-3c87524c2800" name="Changes" comment="validations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/ContractRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/ContractRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/TimeEntryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/TimeEntryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/UserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/dto/UserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/RateRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/RateRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/chronos/timereg/service/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +73,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.ChronosApplication.executor": "Debug",
+    "Spring Boot.ChronosApplication.executor": "Run",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -135,7 +135,7 @@
       <workItem from="1744208651808" duration="42780000" />
       <workItem from="1744608022275" duration="584000" />
       <workItem from="1744633944263" duration="616000" />
-      <workItem from="1745474794119" duration="16685000" />
+      <workItem from="1745474794119" duration="23958000" />
     </task>
     <task id="LOCAL-00001" summary="Contracts">
       <option name="closed" value="true" />
@@ -249,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1745500476078</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="validations">
+      <option name="closed" value="true" />
+      <created>1745570321727</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1745570321727</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +276,7 @@
     <MESSAGE value="Project" />
     <MESSAGE value="Leaves" />
     <MESSAGE value="getHolidays returns also the greek holidays" />
-    <option name="LAST_COMMIT_MESSAGE" value="getHolidays returns also the greek holidays" />
+    <MESSAGE value="validations" />
+    <option name="LAST_COMMIT_MESSAGE" value="validations" />
   </component>
 </project>

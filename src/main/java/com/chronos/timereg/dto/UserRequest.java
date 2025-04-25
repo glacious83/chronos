@@ -20,6 +20,8 @@ public class UserRequest {
     // Employee ID will also be used as the username
     @NotBlank
     private String employeeId;
+    @NotBlank
+    private String sapId;
 
     @NotBlank
     private String password; // In production, store hashed passwords

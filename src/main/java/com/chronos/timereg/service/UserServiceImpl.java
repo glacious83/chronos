@@ -109,6 +109,7 @@ public class UserServiceImpl implements UserService {
         existing.setEmployeeId(userRequest.getEmployeeId());
         existing.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         existing.setTitle(userRequest.getTitle());
+        existing.setSapId(userRequest.getSapId());
 
         Department department = departmentRepository.findById(userRequest.getDepartmentId())
                 .orElseThrow(() -> new BusinessException("Department not found with id: " + userRequest.getDepartmentId()));
