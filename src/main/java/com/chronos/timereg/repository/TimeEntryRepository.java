@@ -16,4 +16,8 @@ public interface TimeEntryRepository extends JpaRepository<TimeEntry, Long> {
     List<TimeEntry> findByUser_IdAndDate(@NotNull Long userId, @NotNull LocalDate date);
 
     void deleteByUser_Id(Long id);
+
+    List<TimeEntry> findByUser_Department_CodeAndDateBetween(
+            String departmentCode, LocalDate start, LocalDate end
+    );
 }

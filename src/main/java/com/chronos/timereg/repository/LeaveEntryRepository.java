@@ -17,4 +17,10 @@ public interface LeaveEntryRepository extends JpaRepository<LeaveEntry, Long> {
 
     // Optionally, if you need to return the actual leave records for a given date range:
     List<LeaveEntry> findByUser_IdAndDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
+
+    List<LeaveEntry> findByUser_Department_CodeAndDateBetween(
+            String departmentCode,
+            LocalDate startDate,
+            LocalDate endDate
+    );
 }

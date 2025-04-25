@@ -1,12 +1,14 @@
 package com.chronos.timereg.controller;
 
 import com.chronos.timereg.dto.LeavesReportDTO;
+import com.chronos.timereg.dto.MonthlyRecordDTO;
 import com.chronos.timereg.dto.TimeReportDTO;
 import com.chronos.timereg.service.ReportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/reports")
@@ -76,5 +78,24 @@ public class ReportsController {
             @RequestParam("year") int year) {
         TimeReportDTO report = reportService.getYearlyTimeReport(userId, year);
         return ResponseEntity.ok(report);
+    }
+
+    @GetMapping("/{userId}/monthly-records")
+    public List<MonthlyRecordDTO> monthlyRecords(
+            @PathVariable Long userId,
+            @RequestParam int year,
+            @RequestParam int month
+    ) {
+        return reportService.getMonthlyRecordReport(userId, year, month);
+    }
+
+    @GetMapping("/monthly-records")
+    public List<MonthlyRecordDTO> monthlyRecordsForDepartment(
+            @RequestParam String department,
+            @RequestParam int year,
+            @RequestParam int month
+    ) {
+        return reportService
+                .getMonthlyRecordReportForDepartment(department, year, month);
     }
 }
