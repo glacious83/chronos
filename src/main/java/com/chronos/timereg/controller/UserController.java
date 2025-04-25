@@ -18,9 +18,17 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * GET /api/users?role={role}
+     * If `role` is present, only users with that role are returned.
+     * Otherwise, returns all users.
+     */
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<User>> getAllUsers(
+            @RequestParam(value = "role", required = false) String role
+    ) {
+        List<User> users = userService.getAllUsers(role);
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")

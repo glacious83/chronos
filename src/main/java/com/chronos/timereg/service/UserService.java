@@ -5,7 +5,7 @@ import com.chronos.timereg.model.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsers();
+    List<User> getAllUsers(String role);
     User getUserById(Long id);
     User createUser(UserRequest userRequest);
     User updateUser(Long id, UserRequest userRequest);

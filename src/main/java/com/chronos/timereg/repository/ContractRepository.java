@@ -19,4 +19,6 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
             "c.workingHoursStart IS NULL OR " +
             "c.workingHoursEnd IS NULL")
     List<Contract> findContractsWithMissingFields();
+
+    void deleteByUser_Id(Long id);
 }

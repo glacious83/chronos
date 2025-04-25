@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLastName(String managerLastName);
 
     @Query("SELECT u FROM User u WHERE " +
-            "u.email IS NULL OR u.email = '' OR " +
+            "(u.email IS NULL OR u.email = '' OR " +
             "u.employeeId IS NULL OR u.employeeId = '' OR " +
             "u.firstName IS NULL OR u.firstName = '' OR " +
             "u.ip IS NULL OR u.ip = '' OR " +
@@ -30,8 +30,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "u.department IS NULL OR " +
             "u.location IS NULL OR " +
             "u.approved IS false OR " +
-            "u.responsibleManager IS NULL")
+            "u.responsibleManager IS NULL) AND " +
+            "u.lastName != 'Admin'")
     List<User> findUsersWithMissingFields();
 
     CharSequence findByEmail(String mail);
+
+    List<User> findByTitle(String role);
 }

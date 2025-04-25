@@ -4,9 +4,7 @@ import com.chronos.timereg.dto.UserRequest;
 import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.Department;
 import com.chronos.timereg.model.User;
-import com.chronos.timereg.repository.DepartmentRepository;
-import com.chronos.timereg.repository.RateRepository;
-import com.chronos.timereg.repository.UserRepository;
+import com.chronos.timereg.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,17 +17,24 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DepartmentRepository departmentRepository;
     private final RateRepository rateRepository;
+    private final ContractRepository contractRepository;
+    private final TimeEntryRepository timeEntryRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository, ContractRepository contractRepository, TimeEntryRepository timeEntryRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
         this.rateRepository = rateRepository;
+        this.contractRepository = contractRepository;
+        this.timeEntryRepository = timeEntryRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(String role) {
+        if (role != null && !role.isEmpty()) {
+            return userRepository.findByTitle(role);
+        }
         return userRepository.findAll();
     }
 
@@ -121,6 +126,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
+        if (!timeEntryRepository.findByUser_Id(id).isEmpty()) {
+            throw new BusinessException("Cannot delete user with existing time entries.");
+        }
+        timeEntryRepository.deleteByUser_Id(id);
+        contractRepository.deleteByUser_Id(id);
         userRepository.deleteById(id);
     }
 
