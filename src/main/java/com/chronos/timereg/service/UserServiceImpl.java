@@ -3,7 +3,9 @@ package com.chronos.timereg.service;
 import com.chronos.timereg.dto.UserRequest;
 import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.Department;
+import com.chronos.timereg.model.Role;
 import com.chronos.timereg.model.User;
+import com.chronos.timereg.model.enums.RoleName;
 import com.chronos.timereg.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,14 +22,16 @@ public class UserServiceImpl implements UserService {
     private final ContractRepository contractRepository;
     private final TimeEntryRepository timeEntryRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository, ContractRepository contractRepository, TimeEntryRepository timeEntryRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, DepartmentRepository departmentRepository, RateRepository rateRepository, ContractRepository contractRepository, TimeEntryRepository timeEntryRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
         this.rateRepository = rateRepository;
         this.contractRepository = contractRepository;
         this.timeEntryRepository = timeEntryRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Override
@@ -139,5 +143,28 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmployeeId(String username) {
         return userRepository.findByEmployeeId(username)
                 .orElseThrow(() -> new BusinessException("User not found with employee ID: " + username));
+    }
+
+    @Override
+    public void addRoleToUser(Long userId, RoleName[] roleNames) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessException("User not found"));
+        for (RoleName roleName : roleNames) {
+            Role role = roleService.findByName(roleName);
+            if (role == null) {
+                throw new BusinessException("Role not found: " + roleName);
+            }
+            user.getRoles().add(role);
+        }
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeRoleFromUser(Long userId, RoleName roleName) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Role role = roleService.findByName(roleName);
+        user.getRoles().remove(role);
+        userRepository.save(user);
     }
 }

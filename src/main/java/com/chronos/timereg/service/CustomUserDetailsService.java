@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -19,13 +20,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String employeeId) throws UsernameNotFoundException {
-        User user = userRepository.findByEmployeeId(employeeId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with employee id: " + employeeId));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmployeeId(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Not found"));
+        var authorities = user.getRoles().stream()
+                .map(r -> new SimpleGrantedAuthority(r.getName().name()))
+                .collect(Collectors.toSet());
         return new org.springframework.security.core.userdetails.User(
-                user.getEmployeeId(),
-                user.getPassword(),
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
-        );
+                user.getEmployeeId(), user.getPassword(), authorities);
     }
 }

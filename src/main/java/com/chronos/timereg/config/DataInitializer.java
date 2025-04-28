@@ -1,6 +1,8 @@
 package com.chronos.timereg.config;
 
 import com.chronos.timereg.model.User;
+import com.chronos.timereg.model.enums.RoleName;
+import com.chronos.timereg.service.RoleService;
 import com.chronos.timereg.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -11,22 +13,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class DataInitializer {
 
     @Bean
-    public CommandLineRunner initAdminUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner initData(
+            RoleService roleService,
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         return args -> {
-            // Check if a default admin user exists (by email for example)
-            if (userRepository.findByEmail("admin@nbg.gr")==null) {
+            // 1) Ensure all roles exist
+            for (RoleName rn : RoleName.values()) {
+                roleService.create(rn);
+            }
+
+            // 2) Create default admin if missing
+            if (userRepository.findByEmail("admin@nbg.gr") == null) {
                 User admin = new User();
                 admin.setFirstName("Default");
                 admin.setLastName("Admin");
                 admin.setEmail("admin@nbg.gr");
                 admin.setEmployeeId("E00000");
-                // It is important to store the password in hashed form
                 admin.setPassword(passwordEncoder.encode("adminpass"));
-                // Set admin role or title. Adjust based on your implementation.
-                admin.setTitle("ADMIN");
-                // Enable login by setting active and approved flags to true.
                 admin.setActive(true);
                 admin.setApproved(true);
+
+                // assign roles
+                admin.getRoles().add(roleService.findByName(RoleName.ROLE_GLOBAL_ADMIN));
+                admin.getRoles().add(roleService.findByName(RoleName.ROLE_DIRECTORY_ADMIN));
+                admin.getRoles().add(roleService.findByName(RoleName.ROLE_MANAGER));
+                admin.getRoles().add(roleService.findByName(RoleName.ROLE_USER));
+
                 userRepository.save(admin);
             }
         };

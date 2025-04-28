@@ -3,11 +3,9 @@ package com.chronos.timereg.controller;
 import com.chronos.timereg.dto.AdminErrorDTO;
 import com.chronos.timereg.exception.BusinessException;
 import com.chronos.timereg.model.User;
+import com.chronos.timereg.model.enums.RoleName;
 import com.chronos.timereg.repository.UserRepository;
-import com.chronos.timereg.service.AdminService;
-import com.chronos.timereg.service.ComprehensiveImportService;
-import com.chronos.timereg.service.RateImportService;
-import com.chronos.timereg.service.UserImportService;
+import com.chronos.timereg.service.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,13 +18,15 @@ public class AdminController {
     private final RateImportService rateImportService;
     private final AdminService adminService;
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AdminController(ComprehensiveImportService comprehensiveImportService, UserImportService userImportService, RateImportService rateImportService, AdminService adminService, UserRepository userRepository) {
+    public AdminController(ComprehensiveImportService comprehensiveImportService, UserImportService userImportService, RateImportService rateImportService, AdminService adminService, UserRepository userRepository, UserService userService) {
         this.comprehensiveImportService = comprehensiveImportService;
         this.userImportService = userImportService;
         this.rateImportService = rateImportService;
         this.adminService = adminService;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @PostMapping(path = "/importTimeRegData", consumes = "multipart/form-data")
@@ -59,5 +59,23 @@ public class AdminController {
         user.setApproved(approved);
         userRepository.save(user);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/users/{id}/roles")
+    public ResponseEntity<Void> addRole(
+            @PathVariable Long id,
+            @RequestParam RoleName[] roles
+    ) {
+        userService.addRoleToUser(id, roles);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/users/{id}/roles")
+    public ResponseEntity<Void> removeRole(
+            @PathVariable Long id,
+            @RequestParam RoleName role
+    ) {
+        userService.removeRoleFromUser(id, role);
+        return ResponseEntity.noContent().build();
     }
 }
